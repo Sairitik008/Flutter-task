@@ -15,7 +15,10 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(
-      DataCatalogApp(repository: _FakeProductRepository(products: [_product])),
+      DataCatalogApp(
+        repository: _FakeProductRepository(products: [_product]),
+        startAuthenticated: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -37,7 +40,9 @@ void main() {
       products: [_product],
       failure: const AppException('No internet connection.'),
     );
-    await tester.pumpWidget(DataCatalogApp(repository: repository));
+    await tester.pumpWidget(
+      DataCatalogApp(repository: repository, startAuthenticated: true),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text("Couldn't load products"), findsOneWidget);

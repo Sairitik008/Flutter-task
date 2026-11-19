@@ -2,7 +2,8 @@
 
 A Flutter product catalog that loads products from the public DummyJSON API.
 Browse the catalog, search by title, category, or tag, and open a product to
-view its details.
+view its details. Login and registration forms use DummyJSON's authentication
+and user-add endpoints.
 
 ## Run
 
@@ -12,7 +13,9 @@ flutter run
 ```
 
 The app supports Android, web, and Windows. It needs an internet connection to
-load product data and images.
+load product data and images. Use `emilys` / `emilyspass` to try the demo login.
+DummyJSON's registration endpoint is non-persistent: it returns a simulated
+created user, but does not save the account for a later login.
 
 ## Architecture
 
@@ -23,6 +26,9 @@ lib/
     errors/
     network/
   features/
+    auth/
+      data/repositories/
+      presentation/pages/
     products/
       data/
         models/
@@ -34,6 +40,8 @@ lib/
 ```
 
 - `ApiClient` handles HTTP, timeouts, response status, and JSON validation.
+- `ApiAuthRepository` calls DummyJSON's login and simulated user registration
+  endpoints. The auth page validates form input before sending requests.
 - `ApiProductRepository` maps API responses to validated `Product` models.
 - `ProductsController` owns loading/error/success state and search filtering.
 - Presentation widgets render loading, retryable error, empty, list, and detail
